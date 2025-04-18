@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SwordAnimator
+  m_Controller: {fileID: 9100000, guid: 7db351657c9e9c04ab713b9f8e178294, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 3458c2bd94d854648b3716e615be731a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d642661dadcaa3b4cb81aae3ee96507c, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: fb8f1847f8df4a84ca53afb6f8846604, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ec9a1109d59ac1c4a86fe795b7349864, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: a7b261a48be2da145b770973efe2686a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 9ca206c03d3e41a4faa4e8e8e82746a8, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: a7fe895adb6e381419762e171f267dbf, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 20f07452a9fd69049a86ae66c9df752f, type: 2}
