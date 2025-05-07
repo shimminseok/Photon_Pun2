@@ -6,9 +6,6 @@ public class MonsterNetworkReceiver : BaseNetworkReceiver<SummonedMonsterControl
     public bool IsMine => photonView.IsMine && photonView.Owner == PhotonNetwork.LocalPlayer;
 
 
-    ObjectState receivedState;
-    Quaternion receivedRot;
-
     protected virtual void Awake()
     {
         base.Awake();

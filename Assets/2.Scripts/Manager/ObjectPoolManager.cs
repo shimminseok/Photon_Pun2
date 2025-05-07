@@ -28,6 +28,7 @@ public class ObjectPoolManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(TryCreatePool());
+        StartCoroutine(CreateRoomObject("Muzzle"));
     }
 
     /// <summary>
@@ -79,7 +80,7 @@ public class ObjectPoolManager : MonoBehaviour
     {
         if (!poolObjects.ContainsKey(_name))
         {
-            Debug.LogWarning($"???? ??? ??????? : {name}");
+            Debug.LogWarning($"등록된 풀이 없습니다. : {_name}");
             return null;
         }
 
@@ -101,15 +102,11 @@ public class ObjectPoolManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// ????? ????????? ??? ?????? ???
-    /// </summary>
-    /// <param name="_obj"></param>
     IEnumerator DelayedReturnObject(GameObject _obj, UnityAction _action, float _returnTime)
     {
         if (!poolObjects.ContainsKey(_obj.name))
         {
-            Debug.LogWarning($"???? ??? ??????? : {_obj.name}");
+            Debug.LogWarning($"생성된 풀이 존재하지 않습니다. : {_obj.name}");
             yield return null;
         }
 
@@ -132,9 +129,9 @@ public class ObjectPoolManager : MonoBehaviour
         registeredObj.Remove(_name);
     }
 
-    public IEnumerator TryCreatePool()
+    private IEnumerator TryCreatePool()
     {
-        yield return new WaitForSeconds(0.5f); //??? ????..? 0.5?????? ??????
+        yield return new WaitForSeconds(0.5f);
 
         if (!PhotonNetwork.IsMasterClient)
             yield break;
@@ -156,17 +153,32 @@ public class ObjectPoolManager : MonoBehaviour
         foreach (int id in allMonsterIds)
         {
             string monsterName = monsterTb.GetDataByID(id).Prefabs.name;
-            CreatePoolRoot(monsterName); // ??? ???? Hiearchy???? ???? ?????? ????? ?а?...
+            CreatePoolRoot(monsterName);
             for (int i = 0; i < 10; i++)
             {
                 GameObject go = PhotonNetwork.Instantiate(monsterName, Vector3.zero, Quaternion.identity, 0,
                     new object[] { id });
-                //GameObject go = PhotonNetwork.InstantiateRoomObject(monsterName,Vector3.zero,Quaternion.identity,0,new object[] {id });
                 SummonedMonsterController ctrl = Helper.GetComponetHelpper<SummonedMonsterController>(go);
                 ctrl.NetworkReceiver.photonView.RPC(nameof(ctrl.RegisterToPool_RPC), RpcTarget.All,
                     ctrl.NetworkReceiver.photonView.ViewID);
-                go.transform.SetParent(parentCache[go.name]); //????...
+                go.transform.SetParent(parentCache[go.name]);
             }
+        }
+    }
+
+    public IEnumerator CreateRoomObject(string _name)
+    {
+        yield return new WaitForSeconds(0.5f);
+        if (!PhotonNetwork.IsMasterClient) yield break;
+
+        CreatePoolRoot(_name);
+        for (int i = 0; i < 10; i++)
+        {
+            GameObject go = PhotonNetwork.InstantiateRoomObject(_name, Vector3.zero, Quaternion.identity);
+            go.name = _name;
+            go.transform.SetParent(parentCache[go.name]);
+            go.SetActive(false);
+            poolObjects[go.name].Enqueue(go);
         }
     }
 
@@ -175,11 +187,7 @@ public class ObjectPoolManager : MonoBehaviour
         Queue<GameObject> pool = poolObjects[_go.name];
         if (pool.Count > 0)
         {
-            GameObject go = pool.Dequeue();
+            pool.Dequeue();
         }
-    }
-
-    public void ReturnObjectSync(GameObject _go)
-    {
     }
 }

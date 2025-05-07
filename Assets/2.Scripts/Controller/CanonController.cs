@@ -9,26 +9,20 @@ using UnityEngine;
 [RequireComponent(typeof(CanonNetworkReceiver))]
 public class CanonController : BaseController<CanonController>
 {
-    public int             ActorNum        { get; private set; }
-    public ObjectState     CurrentState    { get; private set; }
-
-    
-    
     private ITargetingHandler targetingHandler;
     private ICombatHandler combatHandler;
     private CanonStat stat;
-    
-    
+
+
     private IState<CanonController>[] states;
 
-    private HPBarUI healthBar;
 
     protected virtual void Awake()
-    {        
+    {
         Transform = transform;
         stat = Helper.GetComponetHelpper<CanonStat>(gameObject);
         base.Awake();
-        
+
         targetingHandler = new TargetingHandler();
         combatHandler = new CanonCombatHandler(this, stat);
     }
@@ -43,24 +37,24 @@ public class CanonController : BaseController<CanonController>
     protected virtual void Update()
     {
         base.Update();
-        
-        
     }
 
     protected override void UpdateHealtBar()
     {
         healthBar.UpdateFill(stat.CurrentHp.FinalValue, stat.MaxHp.FinalValue);
     }
+
     protected override IState<CanonController> GetState(ObjectState _state)
     {
         return _state switch
         {
             ObjectState.Idle   => new CanonState.IdleState(),
-            ObjectState.Attack => new CanonState.AttackState(stat.Attack,stat.AttackRange,stat.Attack),
+            ObjectState.Attack => new CanonState.AttackState(stat.AttackRange, stat.AttackSpd),
             ObjectState.Dead   => new CanonState.DestroyedState(),
             _                  => null
         };
     }
+
     public void FindEnemy()
     {
         if (ActorNum != PhotonNetwork.LocalPlayer.ActorNumber)
@@ -83,10 +77,11 @@ public class CanonController : BaseController<CanonController>
 
         NetworkReceiver.photonView.RPC(nameof(RPC_SetTarget), RpcTarget.Others, targetViewID);
     }
+
     public void Attack()
     {
         //TODO : 포탄 생성
-        
+
         Debug.Log("포탑 공격중!!!");
         combatHandler.Attack(Target);
     }
@@ -97,8 +92,8 @@ public class CanonController : BaseController<CanonController>
         //게임 패배
         Debug.Log("파괴 패배!!");
     }
-    
-    
+
+
     [PunRPC]
     public void RPC_SetTarget(int _viewID)
     {
@@ -116,6 +111,7 @@ public class CanonController : BaseController<CanonController>
             }
         }
     }
+
     [PunRPC]
     public void RPC_SpawnSync(Vector3 _pos, int _actorNum)
     {
@@ -126,12 +122,8 @@ public class CanonController : BaseController<CanonController>
             _pos.z *= -1;
             SummonManager.Instance.EnemyCanon = this;
         }
-        transform.position = _pos;
-    }
 
-    public override void OnPhotonInstantiate(PhotonMessageInfo info)
-    {
-        
+        transform.position = _pos;
     }
 
     public override void TakeDamage(int damage)
@@ -142,10 +134,11 @@ public class CanonController : BaseController<CanonController>
 
         NetworkReceiver.photonView.RPC(nameof(RPC_TakeDamage), RpcTarget.All, damage);
     }
+
     [PunRPC]
     public override void RPC_TakeDamage(int _damage)
     {
-        if(CurrentState == ObjectState.Dead) return;
+        if (CurrentState == ObjectState.Dead) return;
 
 
         stat.CurrentHp.ModifyAllValue(_damage);
@@ -156,4 +149,3 @@ public class CanonController : BaseController<CanonController>
         }
     }
 }
-

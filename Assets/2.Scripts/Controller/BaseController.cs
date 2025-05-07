@@ -2,7 +2,8 @@ using System;
 using MonsterStates;
 using UnityEngine;
 using Photon.Pun;
-public abstract class BaseController<TController> : MonoBehaviour, IPunInstantiateMagicCallback,  ITargetable
+
+public abstract class BaseController<TController> : MonoBehaviour, ITargetable
     where TController : BaseController<TController>
 {
     public BaseNetworkReceiver<TController> NetworkReceiver { get; private set; }
@@ -12,7 +13,7 @@ public abstract class BaseController<TController> : MonoBehaviour, IPunInstantia
     public bool                             IsDead          { get; private set; }
 
 
-    public int ActorNum { get; protected set; }
+    public int         ActorNum     { get; protected set; }
     public ObjectState CurrentState { get; private set; }
 
     public StateMachine<TController> StateMachine { get; private set; }
@@ -41,9 +42,9 @@ public abstract class BaseController<TController> : MonoBehaviour, IPunInstantia
         for (int i = 0; i < states.Length; i++)
         {
             var state = GetState((ObjectState)i);
-            if(state == null)
+            if (state == null)
                 continue;
-            
+
             states[i] = state;
         }
 
@@ -53,9 +54,9 @@ public abstract class BaseController<TController> : MonoBehaviour, IPunInstantia
 
     protected abstract void                UpdateHealtBar();
     protected abstract IState<TController> GetState(ObjectState _state);
-    
+
     public abstract void Die();
-    
+
 
     public void ChangeState(ObjectState _state)
     {
@@ -69,11 +70,7 @@ public abstract class BaseController<TController> : MonoBehaviour, IPunInstantia
         CurrentState = _state;
     }
 
-    public abstract void OnPhotonInstantiate(PhotonMessageInfo _info);
     public abstract void TakeDamage(int _damage);
 
     public abstract void RPC_TakeDamage(int _damage);
-
 }
-
-

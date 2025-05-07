@@ -14,11 +14,11 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(MonsterNetworkReceiver))]
 [RequireComponent(typeof(MonsterStat))]
 [RequireComponent(typeof(Animator))]
-public class SummonedMonsterController : BaseController<SummonedMonsterController>
+public class SummonedMonsterController : BaseController<SummonedMonsterController>, IPunInstantiateMagicCallback
 {
-    public SummonObjectData MonsterData { get; private set; }
+    public SummonObjectData MonsterData      { get; private set; }
     public AniEventListener AniEventListener { get; private set; }
-    public MonsterStat MonsterStat { get; private set; }
+    public MonsterStat      MonsterStat      { get; private set; }
 
 
     private Animator animator;
@@ -41,13 +41,10 @@ public class SummonedMonsterController : BaseController<SummonedMonsterControlle
         animationHandler = new AnimatorHandler(animator, MonsterStat);
         movementHandler = new NavMeshMovementHandler(agent, transform, MonsterStat, animationHandler);
         base.Awake();
-        
+
         combatHandler = new SummonObjectCombatHandler(this, MonsterStat, animationHandler);
         networkHandler = new PhotonNetworkHandler(NetworkReceiver.photonView, this);
         targetingHandler = new TargetingHandler();
-        
-
-
     }
 
     private void Start()
@@ -68,21 +65,21 @@ public class SummonedMonsterController : BaseController<SummonedMonsterControlle
         if (healthBar != null)
             healthBar.UnLink();
     }
-    
+
 
     protected override IState<SummonedMonsterController> GetState(ObjectState _state)
     {
         return _state switch
         {
-            ObjectState.Idle => new MonsterStates.IdleState(),
-            ObjectState.Move => new MonsterStates.MoveState(),
+            ObjectState.Idle   => new MonsterStates.IdleState(),
+            ObjectState.Move   => new MonsterStates.MoveState(),
             ObjectState.Attack => new MonsterStates.AttackState(),
-            ObjectState.Dead => new MonsterStates.DeadState(),
-            _ => null
+            ObjectState.Dead   => new MonsterStates.DeadState(),
+            _                  => null
         };
     }
-    
-    
+
+
     public void Move(Vector3 _dis)
     {
         movementHandler.Move(_dis);
@@ -110,7 +107,7 @@ public class SummonedMonsterController : BaseController<SummonedMonsterControlle
 
 
         var newTarget = targetingHandler.FindEnemy();
-        
+
         if (newTarget == Target)
             return;
 
@@ -119,7 +116,6 @@ public class SummonedMonsterController : BaseController<SummonedMonsterControlle
 
         if (Target != null)
             targetViewID = Target.PhotonViewID;
-
 
 
         NetworkReceiver.photonView.RPC(nameof(RPC_SetTarget), RpcTarget.Others, targetViewID);
@@ -160,7 +156,6 @@ public class SummonedMonsterController : BaseController<SummonedMonsterControlle
     }
 
 
-    
     [PunRPC]
     public void RPC_SetTarget(int _viewID)
     {
@@ -202,7 +197,6 @@ public class SummonedMonsterController : BaseController<SummonedMonsterControlle
     [PunRPC]
     public void RPC_SpawnSync(Vector3 _pos, int _actorNum)
     {
-        //???? ???? ???? ????????
         agent.Warp(_pos);
         ActorNum = _actorNum;
         if (ActorNum != PhotonNetwork.LocalPlayer.ActorNumber)
@@ -211,7 +205,6 @@ public class SummonedMonsterController : BaseController<SummonedMonsterControlle
             transform.rotation = NetworkReceiver.MirrorRotation(transform.rotation);
             SummonManager.Instance.EnemyList.Add(this);
             ObjectPoolManager.Instance.GetObjectSync(gameObject);
-            // SummonManager.Instance.EnemyCanon = Canon
         }
 
         agent.avoidancePriority = UnityEngine.Random.Range(0, 50);
@@ -223,11 +216,11 @@ public class SummonedMonsterController : BaseController<SummonedMonsterControlle
     {
         ObjectPoolManager.Instance.ReturnObject(gameObject, 3);
     }
-    [PunRPC]
 
+    [PunRPC]
     public override void RPC_TakeDamage(int _damage)
     {
-        if(CurrentState == ObjectState.Dead) return;
+        if (CurrentState == ObjectState.Dead) return;
 
 
         MonsterStat.CurrentHP.ModifyAllValue(_damage);
@@ -244,8 +237,7 @@ public class SummonedMonsterController : BaseController<SummonedMonsterControlle
     }
 
 
-
-    public override void OnPhotonInstantiate(PhotonMessageInfo info)
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] instData = NetworkReceiver.photonView.InstantiationData;
         MonsterData = TableManager.Instance.GetTable<MonsterTable>().GetDataByID((int)instData[0]);

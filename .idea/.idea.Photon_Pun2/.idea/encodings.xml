@@ -3,5 +3,6 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/Assets/2.Scripts/Controller/SummonedMonsterController.cs" charset="x-windows-949" />
     <file url="file://$PROJECT_DIR$/Assets/2.Scripts/Manager/LobbyManager.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2.Scripts/Manager/ObjectPoolManager.cs" charset="x-windows-949" />
   </component>
 </project>

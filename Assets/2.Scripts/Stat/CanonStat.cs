@@ -17,16 +17,15 @@ public class CanonStat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
-    
+
     public void InitializeStat()
     {
         MaxHp.ModifyBaseValue(1500);
-        CurrentHp.ModifyBaseValue(MaxHp.BaseValue,0, MaxHp.BaseValue);
+        CurrentHp.ModifyBaseValue(MaxHp.BaseValue, 0, MaxHp.BaseValue);
         Attack.ModifyBaseValue(50);
-        AttackRange.ModifyBaseValue(5);
-        AttackSpd.ModifyBaseValue(0.5f);
+        AttackRange.ModifyBaseValue(6);
+        AttackSpd.ModifyBaseValue(1f);
         Defense.ModifyBaseValue(50);
     }
 }

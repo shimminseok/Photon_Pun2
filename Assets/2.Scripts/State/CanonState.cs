@@ -2,41 +2,40 @@ using UnityEngine;
 
 namespace CanonState
 {
-public class IdleState : IState<CanonController>
+    public class IdleState : IState<CanonController>
     {
         public void Enter(CanonController _controller)
         {
-            // _controller.Stop(true);
         }
 
         public void Execute(CanonController _controller)
         {
-
             _controller.FindEnemy();
             if (_controller.Target != null)
             {
-                _controller.ChangeState(ObjectState.Move);
+                _controller.ChangeState(ObjectState.Attack);
             }
         }
+
         public void Exit(CanonController _controller)
         {
         }
     }
+
     public class AttackState : IState<CanonController>
     {
-        private readonly Stat attackStat;
         private readonly Stat attackRange;
         private readonly Stat attackSpd;
 
         float attackTimer;
         float attackDelay;
-        
-        public AttackState(Stat _attackStat, Stat _attackRangStat, Stat _attackSpdStat)
+
+        public AttackState(Stat _attackRangStat, Stat _attackSpdStat)
         {
-            attackStat = _attackStat;
             attackRange = _attackRangStat;
             attackSpd = _attackSpdStat;
         }
+
         public void Enter(CanonController _controller)
         {
             attackTimer = 0f;
@@ -55,9 +54,10 @@ public class IdleState : IState<CanonController>
             float distance = Vector3.Distance(_controller.transform.position, _controller.Target.Transform.position);
             if (distance > attackRange.FinalValue)
             {
-                _controller.ChangeState(ObjectState.Move);
+                _controller.ChangeState(ObjectState.Idle);
                 return;
             }
+
             attackTimer += Time.deltaTime;
             if (attackTimer >= attackDelay)
             {
@@ -71,6 +71,7 @@ public class IdleState : IState<CanonController>
             Debug.Log("Exit Attack");
         }
     }
+
     public class DestroyedState : IState<CanonController>
     {
         public void Enter(CanonController _controller)

@@ -8,7 +8,7 @@ public abstract class BaseNetworkReceiver<TController> : MonoBehaviourPun, IPunO
     protected TController Controller { get; private set; }
     private ObjectState receivedState;
     private Quaternion receivedRot;
-    
+
     protected virtual void Awake()
     {
         Controller = Helper.GetComponetHelpper<TController>(gameObject);
@@ -16,7 +16,7 @@ public abstract class BaseNetworkReceiver<TController> : MonoBehaviourPun, IPunO
 
     protected void Update()
     {
-        if(Controller.ActorNum == PhotonNetwork.LocalPlayer.ActorNumber)
+        if (Controller.ActorNum == PhotonNetwork.LocalPlayer.ActorNumber)
             return;
         Controller.StateMachine.Excute();
     }
@@ -36,8 +36,6 @@ public abstract class BaseNetworkReceiver<TController> : MonoBehaviourPun, IPunO
                 return;
             if (receivedState != Controller.CurrentState)
                 Controller.ChangeState(receivedState);
-            
-            Debug.Log(receivedState);
         }
     }
 
@@ -48,5 +46,3 @@ public abstract class BaseNetworkReceiver<TController> : MonoBehaviourPun, IPunO
         return Quaternion.Euler(euler);
     }
 }
-
-

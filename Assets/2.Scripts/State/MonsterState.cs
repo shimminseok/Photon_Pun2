@@ -13,17 +13,18 @@ namespace MonsterStates
 
         public void Execute(SummonedMonsterController _controller)
         {
-
             _controller.FindEnemy();
             if (_controller.Target != null)
             {
                 _controller.ChangeState(ObjectState.Move);
             }
         }
+
         public void Exit(SummonedMonsterController _controller)
         {
         }
     }
+
     public class MoveState : IState<SummonedMonsterController>
     {
         public void Enter(SummonedMonsterController _controller)
@@ -34,11 +35,12 @@ namespace MonsterStates
 
         public void Execute(SummonedMonsterController _controller)
         {
-            if(_controller.Target == null || _controller.Target.IsDead)
+            if (_controller.Target == null || _controller.Target.IsDead)
             {
                 _controller.ChangeState(ObjectState.Idle);
                 return;
             }
+
             float distance = Vector3.Distance(_controller.transform.position, _controller.Target.Transform.position);
             if (distance <= _controller.MonsterStat.AttackRange.FinalValue)
             {
@@ -56,10 +58,12 @@ namespace MonsterStates
             _controller.Stop(true);
         }
     }
+
     public class AttackState : IState<SummonedMonsterController>
     {
         float attackTimer;
         float attackDelay;
+
         public void Enter(SummonedMonsterController _controller)
         {
             Debug.Log("Enter AttackState");
@@ -70,8 +74,6 @@ namespace MonsterStates
 
         public void Execute(SummonedMonsterController _controller)
         {
-            Debug.Log("Exit AttackState");
-
             if (_controller.Target == null || _controller.Target.IsDead)
             {
                 Debug.Log("Target is Null or Dead");
@@ -85,6 +87,7 @@ namespace MonsterStates
                 _controller.ChangeState(ObjectState.Move);
                 return;
             }
+
             _controller.LookAtTarget(_controller.Target.Transform.position);
             attackTimer += Time.deltaTime;
             if (attackTimer >= attackDelay)
@@ -99,6 +102,7 @@ namespace MonsterStates
             Debug.Log("Exit Attack");
         }
     }
+
     public class DeadState : IState<SummonedMonsterController>
     {
         public void Enter(SummonedMonsterController _controller)
