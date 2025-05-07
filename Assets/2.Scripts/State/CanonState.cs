@@ -4,20 +4,32 @@ namespace CanonState
 {
     public class IdleState : IState<CanonController>
     {
-        public void Enter(CanonController _controller)
+        private Stat attackRange;
+
+        public IdleState(Stat _attackRangeStat)
+        {
+            attackRange = _attackRangeStat;
+        }
+
+        public void Enter(CanonController controller)
         {
         }
 
-        public void Execute(CanonController _controller)
+        public void Execute(CanonController controller)
         {
-            _controller.FindEnemy();
-            if (_controller.Target != null)
+            controller.FindEnemy();
+            if (controller.Target != null)
             {
-                _controller.ChangeState(ObjectState.Attack);
+                float distance = Vector3.Distance(controller.transform.position, controller.Target.Transform.localPosition);
+
+                if (distance < attackRange.FinalValue)
+                {
+                    controller.ChangeState(ObjectState.Attack);
+                }
             }
         }
 
-        public void Exit(CanonController _controller)
+        public void Exit(CanonController controller)
         {
         }
     }
@@ -36,25 +48,25 @@ namespace CanonState
             attackSpd = _attackSpdStat;
         }
 
-        public void Enter(CanonController _controller)
+        public void Enter(CanonController controller)
         {
             attackTimer = 0f;
             float attackSpd = this.attackSpd.FinalValue;
             attackDelay = attackSpd > 0 ? 1f / attackSpd : 1f;
         }
 
-        public void Execute(CanonController _controller)
+        public void Execute(CanonController controller)
         {
-            if (_controller.Target == null || _controller.Target.IsDead)
+            if (controller.Target == null || controller.Target.IsDead)
             {
-                _controller.ChangeState(ObjectState.Idle);
+                controller.ChangeState(ObjectState.Idle);
                 return;
             }
 
-            float distance = Vector3.Distance(_controller.transform.position, _controller.Target.Transform.position);
+            float distance = Vector3.Distance(controller.transform.position, controller.Target.Transform.position);
             if (distance > attackRange.FinalValue)
             {
-                _controller.ChangeState(ObjectState.Idle);
+                controller.ChangeState(ObjectState.Idle);
                 return;
             }
 
@@ -62,11 +74,11 @@ namespace CanonState
             if (attackTimer >= attackDelay)
             {
                 attackTimer = 0f;
-                _controller.Attack();
+                controller.Attack();
             }
         }
 
-        public void Exit(CanonController _controller)
+        public void Exit(CanonController controller)
         {
             Debug.Log("Exit Attack");
         }
@@ -74,16 +86,16 @@ namespace CanonState
 
     public class DestroyedState : IState<CanonController>
     {
-        public void Enter(CanonController _controller)
+        public void Enter(CanonController controller)
         {
-            _controller.Die();
+            controller.Die();
         }
 
-        public void Execute(CanonController _controller)
+        public void Execute(CanonController controller)
         {
         }
 
-        public void Exit(CanonController _controller)
+        public void Exit(CanonController controller)
         {
             Debug.Log("Dead Exit");
         }

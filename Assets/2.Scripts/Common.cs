@@ -72,7 +72,7 @@ public interface ITargetingHandler
 
 public interface ITable
 {
-    public Type Type { get; }
+    public          Type Type { get; }
     public abstract void CreateTable();
 }
 
@@ -84,6 +84,18 @@ public interface ITargetable
     bool        IsDead       { get; }
     void        TakeDamage(int _damage);
 }
+
+public interface INetworkPoolable
+{
+    PhotonView PhotonView { get; }
+
+    [PunRPC]
+    void RegisterToPool_RPC(int _viewID, string _name);
+
+    [PunRPC]
+    void RPC_SpawnSync(int _actorNum, Vector3 _spawnPos);
+}
+
 #endregion[Interface]
 
 [Serializable]
@@ -102,6 +114,7 @@ public class SummonObjectData
 
     public float SummonCost;
 }
+
 public interface IState<T> where T : class
 {
     void Enter(T _owenr);
@@ -113,10 +126,10 @@ public interface IState<T> where T : class
 public class Stat
 {
     public StatType Type;
-    public float BaseValue { get; private set; }
-    public float BuffValue { get; private set; }
+    public float BaseValue    { get; private set; }
+    public float BuffValue    { get; private set; }
     public float PercentValue { get; private set; }
-    public float FinalValue => (BaseValue + BuffValue /*+ EquipmentValue*/) * (1 + PercentValue);
+    public float FinalValue   => (BaseValue + BuffValue /*+ EquipmentValue*/) * (1 + PercentValue);
 
 
     public event Action<float> OnStatChanged;

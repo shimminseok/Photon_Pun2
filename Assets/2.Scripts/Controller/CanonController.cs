@@ -48,7 +48,7 @@ public class CanonController : BaseController<CanonController>
     {
         return _state switch
         {
-            ObjectState.Idle   => new CanonState.IdleState(),
+            ObjectState.Idle   => new CanonState.IdleState(stat.AttackRange),
             ObjectState.Attack => new CanonState.AttackState(stat.AttackRange, stat.AttackSpd),
             ObjectState.Dead   => new CanonState.DestroyedState(),
             _                  => null

@@ -47,6 +47,8 @@ MonoBehaviour:
   - RPC_SpawnSync
   - RPC_Destroy
   - RPC_DestroySync
+  - ActivateRPC
+  - RPC_Activate
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

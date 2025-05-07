@@ -2094,6 +2094,7 @@ GameObject:
   - component: {fileID: 6814281338348121393}
   - component: {fileID: 2506318957919132280}
   - component: {fileID: -6269812013534099599}
+  - component: {fileID: -2502227658094801961}
   m_Layer: 0
   m_Name: DW_Mon_Bandit_Axe
   m_TagString: Untagged
@@ -2234,6 +2235,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c4a94b2bc49ef428e198a592c471b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &-2502227658094801961
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9063296079756686075}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &9199296998276040193
 GameObject:
   m_ObjectHideFlags: 0

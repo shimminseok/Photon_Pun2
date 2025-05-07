@@ -27,8 +27,8 @@ public class ObjectPoolManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(TryCreatePool());
-        StartCoroutine(CreateRoomObject("Muzzle"));
+        CreateMonsterPool();
+        CreateNetworkObject("Muzzle");
     }
 
     /// <summary>
@@ -111,6 +111,7 @@ public class ObjectPoolManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(_returnTime);
+        _obj.transform.localPosition = Vector3.zero;
         _obj.SetActive(false);
         _action?.Invoke();
         poolObjects[_obj.name].Enqueue(_obj);
@@ -129,12 +130,10 @@ public class ObjectPoolManager : MonoBehaviour
         registeredObj.Remove(_name);
     }
 
-    private IEnumerator TryCreatePool()
+    private void CreateMonsterPool()
     {
-        yield return new WaitForSeconds(0.5f);
-
         if (!PhotonNetwork.IsMasterClient)
-            yield break;
+            return;
 
         List<int> allMonsterIds = new List<int>();
         foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
@@ -153,41 +152,67 @@ public class ObjectPoolManager : MonoBehaviour
         foreach (int id in allMonsterIds)
         {
             string monsterName = monsterTb.GetDataByID(id).Prefabs.name;
-            CreatePoolRoot(monsterName);
             for (int i = 0; i < 10; i++)
             {
-                GameObject go = PhotonNetwork.Instantiate(monsterName, Vector3.zero, Quaternion.identity, 0,
-                    new object[] { id });
-                SummonedMonsterController ctrl = Helper.GetComponetHelpper<SummonedMonsterController>(go);
-                ctrl.NetworkReceiver.photonView.RPC(nameof(ctrl.RegisterToPool_RPC), RpcTarget.All,
-                    ctrl.NetworkReceiver.photonView.ViewID);
-                go.transform.SetParent(parentCache[go.name]);
+                // GameObject go = PhotonNetwork.Instantiate(monsterName, Vector3.zero, Quaternion.identity, 0,
+                //     new object[] { id });
+                // if (!go.TryGetComponent<INetworkPoolable>(out var poolable))
+                // {
+                //     Debug.LogError($"INetworkPoolable is Null {go.name}");
+                //     yield break;
+                // }
+
+                CreateNetworkObject(monsterName, new object[] { id });
+                // SummonedMonsterController ctrl = Helper.GetComponetHelpper<SummonedMonsterController>(go);
+                // ctrl.NetworkReceiver.photonView.RPC(nameof(ctrl.RegisterToPool_RPC), RpcTarget.All, ctrl.NetworkReceiver.photonView.ViewID);
             }
         }
     }
 
-    public IEnumerator CreateRoomObject(string _name)
+    private void CreateNetworkObject(string _name, object[] _initData = null)
     {
-        yield return new WaitForSeconds(0.5f);
-        if (!PhotonNetwork.IsMasterClient) yield break;
+        if (!PhotonNetwork.IsMasterClient)
+            return;
 
-        CreatePoolRoot(_name);
         for (int i = 0; i < 10; i++)
         {
-            GameObject go = PhotonNetwork.InstantiateRoomObject(_name, Vector3.zero, Quaternion.identity);
-            go.name = _name;
-            go.transform.SetParent(parentCache[go.name]);
-            go.SetActive(false);
-            poolObjects[go.name].Enqueue(go);
+            GameObject go = PhotonNetwork.InstantiateRoomObject(_name, Vector3.zero, Quaternion.identity, 0, _initData);
+            if (!go.TryGetComponent<INetworkPoolable>(out var poolable))
+            {
+                Debug.LogError($"INetworkPoolable is Null {go.name}");
+                return;
+            }
+
+            poolable.PhotonView.RPC(nameof(poolable.RegisterToPool_RPC), RpcTarget.All, poolable.PhotonView.ViewID, _name);
         }
     }
 
-    public void GetObjectSync(GameObject _go)
+    public void GetObjectSync(int _viewID)
     {
-        Queue<GameObject> pool = poolObjects[_go.name];
+        GameObject        go   = PhotonView.Find(_viewID).gameObject;
+        Queue<GameObject> pool = poolObjects[go.name];
         if (pool.Count > 0)
         {
             pool.Dequeue();
         }
+    }
+
+    public void RegisterRuntimeObject(string name, GameObject obj)
+    {
+        if (!parentCache.ContainsKey(name))
+            CreatePoolRoot(name);
+
+        obj.transform.SetParent(parentCache[name]);
+        obj.SetActive(false);
+
+        if (!poolObjects.ContainsKey(name))
+            poolObjects[name] = new Queue<GameObject>();
+
+        poolObjects[name].Enqueue(obj);
+    }
+
+    private void OnDestroy()
+    {
+        Instance = null;
     }
 }

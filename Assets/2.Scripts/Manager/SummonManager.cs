@@ -59,8 +59,7 @@ public class SummonManager : MonoBehaviour
 
                 SummonedMonsterController ctrl = Helper.GetComponetHelpper<SummonedMonsterController>(go);
                 ctrl.NetworkReceiver.photonView.TransferOwnership(PhotonNetwork.LocalPlayer.ActorNumber);
-                ctrl.NetworkReceiver.photonView.RPC(nameof(ctrl.RPC_SpawnSync), RpcTarget.All, hit.point,
-                    PhotonNetwork.LocalPlayer.ActorNumber);
+                ctrl.NetworkReceiver.photonView.RPC(nameof(ctrl.RPC_SpawnSync), RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, hit.point);
 
                 SummonLifeSystem.ConsumeLife(ctrl.MonsterData.SummonCost);
                 isSummonable = false;
@@ -91,7 +90,6 @@ public class SummonManager : MonoBehaviour
             return EnemyList.Find(x => !x.IsDead);
         }
 
-        //TODO : 타워를 타겟팅 하도옥
         return EnemyCanon;
     }
 

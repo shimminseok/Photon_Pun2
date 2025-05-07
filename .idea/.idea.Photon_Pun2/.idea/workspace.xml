@@ -5,28 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bb5ab438-6a61-4440-bc08-4ca2877cff4e" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Photon_Pun2/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Photon_Pun2/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Photon_Pun2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Photon_Pun2/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/1.Scenes/MainScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/1.Scenes/MainScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/BaseNetworkReceiver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/BaseNetworkReceiver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/CanonNetworkReceiver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/CanonNetworkReceiver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/Controller/BaseController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/Controller/BaseController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/1.Scenes/InGameScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/1.Scenes/InGameScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/Common.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/Common.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/Controller/CanonController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/Controller/CanonController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/Controller/SummonedMonsterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/Controller/SummonedMonsterController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/Handler/CanonCombatHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/Handler/CanonCombatHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/Handler/NavMeshMovementHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/Handler/NavMeshMovementHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/Manager/ObjectPoolManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/Manager/ObjectPoolManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/Manager/SummonManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/Manager/SummonManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/MonsterNetworkReceiver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/MonsterNetworkReceiver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/Stat/CanonStat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/Stat/CanonStat.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/Muzzle.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/Muzzle.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/State/CanonState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/State/CanonState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/State/MonsterState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/State/MonsterState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Canon.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Canon.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Monster_Archer.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Monster_Archer.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Monster_CrossBow.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Monster_CrossBow.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Monster_HeavySwordman.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Monster_HeavySwordman.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/2.Scripts/UI/SummonUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2.Scripts/UI/SummonUI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/DW_Mon_Bandit_Archer.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/DW_Mon_Bandit_Archer.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/DW_Mon_Bandit_Axe.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/DW_Mon_Bandit_Axe.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/DW_Mon_Bandit_Boss.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/DW_Mon_Bandit_Boss.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/DW_Mon_Bandit_Mace.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/DW_Mon_Bandit_Mace.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/DW_Mon_Bandit_Sword.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/DW_Mon_Bandit_Sword.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Muzzle.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Muzzle.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/DynamicsManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/DynamicsManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,6 +65,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/2.Scripts/Handler/CanonCombatHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/2.Scripts/Handler/TargetingHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/2.Scripts/Manager/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2.Scripts/MuzzleNetworkReceiver.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/2.Scripts/Stat/CanonStat.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/2.Scripts/State/CanonState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@9496653a3df6/Runtime/TMP/MaterialReferenceManager.cs" root0="SKIP_HIGHLIGHTING" />
@@ -135,10 +135,10 @@
       <option name="PTY_MODE" value="Auto" />
       <method v="2" />
     </configuration>
-    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="46144">
+    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="130304">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="46144" />
+      <option name="pid" value="130304" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
         <list>
@@ -178,7 +178,7 @@
       <workItem from="1745690561674" duration="14000" />
       <workItem from="1745806338268" duration="518000" />
       <workItem from="1746278388011" duration="22524000" />
-      <workItem from="1746580962136" duration="5479000" />
+      <workItem from="1746580962136" duration="33372000" />
     </task>
     <servers />
   </component>
@@ -222,17 +222,17 @@
           <option name="timeStamp" value="3" />
         </breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/2.Scripts/Handler/SummonObjectCombatHandler.cs</url>
-          <line>18</line>
-          <properties documentPath="E:\2-Study\Photon_Pun2\Assets\2.Scripts\Handler\SummonObjectCombatHandler.cs" containingFunctionPresentation="메서드 'Attack'">
+          <url>file://$PROJECT_DIR$/Assets/2.Scripts/Controller/CanonController.cs</url>
+          <line>85</line>
+          <properties documentPath="E:\2-Study\Photon_Pun2\Assets\2.Scripts\Controller\CanonController.cs" containingFunctionPresentation="메서드 'Attack'">
             <startOffsets>
-              <option value="496" />
+              <option value="2140" />
             </startOffsets>
             <endOffsets>
-              <option value="532" />
+              <option value="2169" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="41" />
+          <option name="timeStamp" value="56" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

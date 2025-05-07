@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using Unity.Profiling.LowLevel.Unsafe;
 using UnityEngine;
 
-public class CanonCombatHandler : MonoBehaviour, ICombatHandler
+public class CanonCombatHandler : ICombatHandler
 {
     private CanonController controller;
     private CanonStat stat;
 
-    public CanonCombatHandler(CanonController _controller, CanonStat _stats)
+    public CanonCombatHandler(CanonController controller, CanonStat _stats)
     {
-        controller = _controller;
+        this.controller = controller;
         stat = _stats;
     }
 
@@ -18,6 +19,7 @@ public class CanonCombatHandler : MonoBehaviour, ICombatHandler
     {
         if (target == null || target.IsDead)
             return;
+
 
         GameObject muzzle = ObjectPoolManager.Instance.GetObject("Muzzle");
         if (muzzle == null)
@@ -28,12 +30,7 @@ public class CanonCombatHandler : MonoBehaviour, ICombatHandler
             return;
 
         int damage = Mathf.RoundToInt(stat.Attack.FinalValue);
-        // target.TakeDamage(damage);
-        muzzleComponent.SetTarget(target.Transform.gameObject, target.TakeDamage, damage);
-    }
 
-    IEnumerator GetMuzzle()
-    {
-        yield return null;
+        muzzleComponent.SetTarget(controller, target.Transform.gameObject, target.TakeDamage, damage);
     }
 }

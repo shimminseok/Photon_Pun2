@@ -2024,6 +2024,7 @@ GameObject:
   - component: {fileID: 5259380649064998042}
   - component: {fileID: 5956655683728626664}
   - component: {fileID: 9024959912657671152}
+  - component: {fileID: 7203629786749573426}
   m_Layer: 0
   m_Name: DW_Mon_Bandit_Archer
   m_TagString: Untagged
@@ -2165,6 +2166,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c4a94b2bc49ef428e198a592c471b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &7203629786749573426
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7691995283007004551}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &7896479784998050443
 GameObject:
   m_ObjectHideFlags: 0

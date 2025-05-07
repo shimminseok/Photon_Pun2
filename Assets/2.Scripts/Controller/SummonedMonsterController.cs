@@ -14,11 +14,12 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(MonsterNetworkReceiver))]
 [RequireComponent(typeof(MonsterStat))]
 [RequireComponent(typeof(Animator))]
-public class SummonedMonsterController : BaseController<SummonedMonsterController>, IPunInstantiateMagicCallback
+public class SummonedMonsterController : BaseController<SummonedMonsterController>, IPunInstantiateMagicCallback, INetworkPoolable
 {
     public SummonObjectData MonsterData      { get; private set; }
     public AniEventListener AniEventListener { get; private set; }
     public MonsterStat      MonsterStat      { get; private set; }
+    public PhotonView       PhotonView       { get; private set; }
 
 
     private Animator animator;
@@ -45,6 +46,8 @@ public class SummonedMonsterController : BaseController<SummonedMonsterControlle
         combatHandler = new SummonObjectCombatHandler(this, MonsterStat, animationHandler);
         networkHandler = new PhotonNetworkHandler(NetworkReceiver.photonView, this);
         targetingHandler = new TargetingHandler();
+
+        PhotonView = NetworkReceiver.photonView;
     }
 
     private void Start()
@@ -118,7 +121,7 @@ public class SummonedMonsterController : BaseController<SummonedMonsterControlle
             targetViewID = Target.PhotonViewID;
 
 
-        NetworkReceiver.photonView.RPC(nameof(RPC_SetTarget), RpcTarget.Others, targetViewID);
+        PhotonView.RPC(nameof(RPC_SetTarget), RpcTarget.Others, targetViewID);
     }
 
     public void HandleAttack()
@@ -137,7 +140,7 @@ public class SummonedMonsterController : BaseController<SummonedMonsterControlle
         if (ActorNum != PhotonNetwork.LocalPlayer.ActorNumber)
             return;
 
-        NetworkReceiver.photonView.RPC(nameof(RPC_TakeDamage), RpcTarget.All, damage);
+        PhotonView.RPC(nameof(RPC_TakeDamage), RpcTarget.All, damage);
     }
 
     public override void Die()
@@ -151,7 +154,7 @@ public class SummonedMonsterController : BaseController<SummonedMonsterControlle
         animator.SetTrigger("Dead");
         healthBar.UnLink();
         HealthBarManager.Instance.DespawnHealthBar(healthBar);
-        NetworkReceiver.photonView.RPC(nameof(RPC_DestroySync), RpcTarget.Others);
+        // PhotonView.RPC(nameof(RPC_DestroySync), RpcTarget.Others);
         ObjectPoolManager.Instance.ReturnObject(gameObject, 3);
     }
 
@@ -176,35 +179,28 @@ public class SummonedMonsterController : BaseController<SummonedMonsterControlle
 
 
     [PunRPC]
-    public void RegisterToPool_RPC(int viewID)
+    public void RegisterToPool_RPC(int _viewID, string _name)
     {
-        PhotonView view = PhotonView.Find(viewID);
+        PhotonView view = PhotonView.Find(_viewID);
         if (view != null)
         {
             GameObject go = view.gameObject;
-            go.name = view.name;
-            go.SetActive(false);
-            if (!ObjectPoolManager.Instance.poolObjects.TryGetValue(go.name, out var queue))
-            {
-                queue = new Queue<GameObject>();
-                ObjectPoolManager.Instance.poolObjects[go.name] = queue;
-            }
-
-            queue.Enqueue(go);
+            go.name = _name;
+            ObjectPoolManager.Instance.RegisterRuntimeObject(go.name, go);
         }
     }
 
     [PunRPC]
-    public void RPC_SpawnSync(Vector3 _pos, int _actorNum)
+    public void RPC_SpawnSync(int _actorNum, Vector3 _spawnPos)
     {
-        agent.Warp(_pos);
+        agent.Warp(_spawnPos);
         ActorNum = _actorNum;
         if (ActorNum != PhotonNetwork.LocalPlayer.ActorNumber)
         {
             movementHandler.MirrorPosition();
             transform.rotation = NetworkReceiver.MirrorRotation(transform.rotation);
             SummonManager.Instance.EnemyList.Add(this);
-            ObjectPoolManager.Instance.GetObjectSync(gameObject);
+            ObjectPoolManager.Instance.GetObjectSync(NetworkReceiver.photonView.ViewID);
         }
 
         agent.avoidancePriority = UnityEngine.Random.Range(0, 50);
