@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Unity.Burst.Intrinsics;
+using Photon.Pun;
 using UnityEngine;
 
 #region[Enum]
@@ -50,7 +50,7 @@ public interface IMovementHandler
 
 public interface ICombatHandler
 {
-    void Attack(SummonedMonsterController target);
+    void Attack(ITargetable target);
 }
 
 public interface IAnimationHandler
@@ -67,7 +67,7 @@ public interface INetworkHandler
 
 public interface ITargetingHandler
 {
-    SummonedMonsterController FindEnemy();
+    ITargetable FindEnemy();
 }
 
 public interface ITable
@@ -76,6 +76,14 @@ public interface ITable
     public abstract void CreateTable();
 }
 
+public interface ITargetable
+{
+    ITargetable Target       { get; }
+    Transform   Transform    { get; }
+    int         PhotonViewID { get; }
+    bool        IsDead       { get; }
+    void        TakeDamage(int _damage);
+}
 #endregion[Interface]
 
 [Serializable]
@@ -94,17 +102,6 @@ public class SummonObjectData
 
     public float SummonCost;
 }
-
-// public abstract class State<T> : IState<T> where T : class
-// {
-//     /// <summary>
-//     /// Invoked when the state is entered.
-//     /// </summary>
-//     /// <param name="_controller">The controller associated with the state.</param>
-//     public abstract void Enter(T _controller);
-//     public abstract void Execute(T _controller);
-//     public abstract void Exit(T _controller);
-// }
 public interface IState<T> where T : class
 {
     void Enter(T _owenr);

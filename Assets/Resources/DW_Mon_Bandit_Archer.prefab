@@ -2165,19 +2165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c4a94b2bc49ef428e198a592c471b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MonsterData:
-    ID: 0
-    Name: 
-    MaxHP: 0
-    AttackPow: 0
-    AttackRange: 0
-    AttackSpd: 0
-    Defense: 0
-    MoveSpd: 0
-    Prefabs: {fileID: 0}
-    MonsterIcon: {fileID: 0}
-    SummonCost: 0
-  Animator: {fileID: 7193974211274762527}
 --- !u!1 &7896479784998050443
 GameObject:
   m_ObjectHideFlags: 0

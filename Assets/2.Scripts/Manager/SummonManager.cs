@@ -1,3 +1,4 @@
+using System;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
@@ -15,9 +16,9 @@ public class SummonManager : MonoBehaviour
 
     string monsterPath = string.Empty;
 
-    public List<SummonedMonsterController> EnemyList = new List<SummonedMonsterController>();
+    public List<ITargetable> EnemyList = new List<ITargetable>();
     public SummonLifeSystem SummonLifeSystem { get; private set; }
-
+    public ITargetable      EnemyCanon       { get; set; }
 
     bool isSummonable;
 
@@ -35,6 +36,13 @@ public class SummonManager : MonoBehaviour
         }
 
         SummonLifeSystem = new SummonLifeSystem(lifeDuration, maxLife);
+    }
+
+    void Start()
+    {
+        GameObject      go        = PhotonNetwork.Instantiate("Canon", Vector3.zero, Quaternion.identity, 0);
+        CanonController canonCtrl = Helper.GetComponetHelpper<CanonController>(go);
+        canonCtrl.NetworkReceiver.photonView.RPC(nameof(canonCtrl.RPC_SpawnSync), RpcTarget.All, new Vector3(0, 0.5f, -7), PhotonNetwork.LocalPlayer.ActorNumber);
     }
 
     void Update()
@@ -69,7 +77,7 @@ public class SummonManager : MonoBehaviour
     public void OnClickSummonBtn(int _id)
     {
         var data = TableManager.Instance.GetTable<MonsterTable>().GetDataByID(_id);
-        if (data == null || SummonLifeSystem.IsSummonable(data.SummonCost))
+        if (data == null || !SummonLifeSystem.IsSummonable(data.SummonCost))
             return;
 
         isSummonable = true;
@@ -77,15 +85,17 @@ public class SummonManager : MonoBehaviour
         summonedMonsterID = _id;
     }
 
-    public SummonedMonsterController FindEnemy()
+    public ITargetable FindEnemy()
     {
         if (EnemyList.Count > 0)
         {
-            return EnemyList.Find(x => x.CurrentState != ObjectState.Dead);
+            return EnemyList.Find(x => !x.IsDead);
         }
 
-        return null;
+        //TODO : 타워를 타겟팅 하도옥
+        return EnemyCanon;
     }
+
 
     public void RemoveEnemy(SummonedMonsterController _enemy)
     {
@@ -97,5 +107,10 @@ public class SummonManager : MonoBehaviour
         GUI.TextArea(new Rect(30, 0, 200, 50), PhotonNetwork.GetPing().ToString());
 
         GUI.TextArea(new Rect(30, 60, 200, 50), PhotonNetwork.NickName);
+    }
+
+    private void OnDestroy()
+    {
+        Instance = null;
     }
 }

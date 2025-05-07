@@ -361,7 +361,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             if (PhotonNetwork.IsMasterClient)
             {
                 PhotonNetwork.LoadLevel("InGameScene");
-                ChatManager.Instance.SwichChannel(ChannelType.Lobby);
+                ChatManager.Instance.SwichChannel(ChannelType.Room);
             }
         }
     }

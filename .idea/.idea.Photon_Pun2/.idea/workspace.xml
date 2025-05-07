@@ -43,15 +43,27 @@
     &quot;assignee&quot;: &quot;shimminseok&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/shimminseok/Photon_Pun2.git&quot;,
-    &quot;accountId&quot;: &quot;bc0bdf37-d596-4fca-8b36-9a80b4ebed9b&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/shimminseok/Photon_Pun2.git",
+    "accountId": "f92a9ef7-b4c4-45df-85f0-23a8dfc77202"
   }
-}</component>
+}]]></component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/2.Scripts/Handler/TargetingHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/13c0c460649d4ce49f991e2c222fa63546ae00/4c/65d58901/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2ec752a895e44d6e9094ef806bf12c9811200/44/bcf1f2a8/NavMeshAgent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/612ea0208cc847f49d539e6511ed3cd51df400/0f/cfbf2853/Object.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/612ea0208cc847f49d539e6511ed3cd51df400/e5/08a5e2f7/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2.Scripts/BaseNetworkReceiver.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2.Scripts/Controller/BaseController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2.Scripts/Handler/CanonCombatHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2.Scripts/Handler/TargetingHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/2.Scripts/Manager/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2.Scripts/Stat/CanonStat.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2.Scripts/State/CanonState.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@9496653a3df6/Runtime/TMP/TextMeshProUGUI.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Sparta_Unity_Basic/SpartaUnityBasic/Assets/2. Scripts/1. Manager/UIManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Sparta_Unity_Basic/SpartaUnityBasic/Assets/2. Scripts/4. UI/UIBase.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -77,13 +89,13 @@
     "nodejs_package_manager_path": "npm",
     "rider.code.cleanup.on.save": "true",
     "rider.code.cleanup.on.save.profile": "Built-in: Reformat Code",
-    "settings.editor.selected.configurable": "actions.on.save",
+    "settings.editor.selected.configurable": "CodeLensConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RunManager" selected="Unity 에디터에 연결.Unity 에디터에 연결">
     <configuration name="유닛 테스트(배치 모드)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="F:\3_Unity\6000.0.42f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="E:\3_Unity\6000.0.42f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath F:\2-Study\Photon_Pun2 -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="F:\2-Study\Photon_Pun2" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -94,7 +106,7 @@
       <method v="2" />
     </configuration>
     <configuration name="독립실행형 플레이어" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/../Sample/Build\Sample.exe" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/Build\Sample.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="F:\2-Study\Sample\Build" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -105,7 +117,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unity 시작" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="F:\3_Unity\6000.0.42f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="E:\3_Unity\6000.0.42f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath F:\2-Study\Photon_Pun2 -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="F:\2-Study\Photon_Pun2" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -115,13 +127,15 @@
       <option name="PTY_MODE" value="Auto" />
       <method v="2" />
     </configuration>
-    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="483864">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="483864" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
-        <list />
+        <list>
+          <MonoRuntime />
+        </list>
       </option>
       <option name="selectedOptions">
         <list />
@@ -155,6 +169,7 @@
       <workItem from="1745689193320" duration="1364000" />
       <workItem from="1745690561674" duration="14000" />
       <workItem from="1745806338268" duration="518000" />
+      <workItem from="1746278388011" duration="22524000" />
     </task>
     <servers />
   </component>
@@ -197,6 +212,32 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/2.Scripts/Manager/SummonManager.cs</url>
+          <line>95</line>
+          <properties documentPath="E:\2-Study\Photon_Pun2\Assets\2.Scripts\Manager\SummonManager.cs" containingFunctionPresentation="메서드 'FindEnemy'">
+            <startOffsets>
+              <option value="2977" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2995" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/2.Scripts/Handler/SummonObjectCombatHandler.cs</url>
+          <line>18</line>
+          <properties documentPath="E:\2-Study\Photon_Pun2\Assets\2.Scripts\Handler\SummonObjectCombatHandler.cs" containingFunctionPresentation="메서드 'Attack'">
+            <startOffsets>
+              <option value="496" />
+            </startOffsets>
+            <endOffsets>
+              <option value="532" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

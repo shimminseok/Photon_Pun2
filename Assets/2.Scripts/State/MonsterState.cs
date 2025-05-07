@@ -29,24 +29,24 @@ namespace MonsterStates
         public void Enter(SummonedMonsterController _controller)
         {
             _controller.Stop(false);
-            _controller.Move(_controller.Target.transform.position);
+            _controller.Move(_controller.Target.Transform.position);
         }
 
         public void Execute(SummonedMonsterController _controller)
         {
-            if(_controller.Target == null || _controller.Target.CurrentState == ObjectState.Dead)
+            if(_controller.Target == null || _controller.Target.IsDead)
             {
                 _controller.ChangeState(ObjectState.Idle);
                 return;
             }
-            float distance = Vector3.Distance(_controller.transform.position, _controller.Target.transform.position);
+            float distance = Vector3.Distance(_controller.transform.position, _controller.Target.Transform.position);
             if (distance <= _controller.MonsterStat.AttackRange.FinalValue)
             {
                 _controller.ChangeState(ObjectState.Attack);
             }
             else
             {
-                _controller.Move(_controller.Target.transform.position);
+                _controller.Move(_controller.Target.Transform.position);
                 _controller.LookAtMoveDir();
             }
         }
@@ -62,6 +62,7 @@ namespace MonsterStates
         float attackDelay;
         public void Enter(SummonedMonsterController _controller)
         {
+            Debug.Log("Enter AttackState");
             attackTimer = 0f;
             float attackSpd = _controller.MonsterStat.AttackSpd.FinalValue;
             attackDelay = attackSpd > 0 ? 1f / attackSpd : 1f;
@@ -69,19 +70,22 @@ namespace MonsterStates
 
         public void Execute(SummonedMonsterController _controller)
         {
-            if (_controller.Target == null || _controller.Target.CurrentState == ObjectState.Dead)
+            Debug.Log("Exit AttackState");
+
+            if (_controller.Target == null || _controller.Target.IsDead)
             {
+                Debug.Log("Target is Null or Dead");
                 _controller.ChangeState(ObjectState.Idle);
                 return;
             }
 
-            float distance = Vector3.Distance(_controller.transform.position, _controller.Target.transform.position);
+            float distance = Vector3.Distance(_controller.transform.position, _controller.Target.Transform.position);
             if (distance > _controller.MonsterStat.AttackRange.FinalValue)
             {
                 _controller.ChangeState(ObjectState.Move);
                 return;
             }
-            _controller.LookAtTarget(_controller.Target.transform.position);
+            _controller.LookAtTarget(_controller.Target.Transform.position);
             attackTimer += Time.deltaTime;
             if (attackTimer >= attackDelay)
             {

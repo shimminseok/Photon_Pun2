@@ -39,7 +39,7 @@ public class ChatManager : Singleton<ChatManager>, IChatClientListener
     {
         if (!string.IsNullOrEmpty(_msg))
         {
-            chatClient.PublishMessage(currentChannel.ToString(), _msg);
+            chatClient.PublishMessage(currentChannelStr, _msg);
             inputMessage.text = string.Empty;
         }
     }
@@ -96,25 +96,24 @@ public class ChatManager : Singleton<ChatManager>, IChatClientListener
 
     public void OnConnected()
     {
-        Debug.Log("??? ?????? ???????????.");
+        Debug.Log("채팅 서버에 입장했습니다.");
         SwichChannel(currentChannel);
     }
 
     public void OnDisconnected()
     {
-        Debug.Log("??? ?????? ?????? ????????.");
+        Debug.Log("채팅 서버와 연결이 끊어졌습니다..");
     }
 
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
     {
-        //??????? ???????
         for (int i = 0; i < messages.Length; i++)
         {
             GameObject messageObj = Instantiate(textPrefab, messageRoot);
             ChatUI message = messageObj.GetComponent<ChatUI>();
             message.ReceiveMessage(messages[i].ToString());
 
-            //Debug.Log($"{senders[i]}: {messages[i]}");
+            Debug.Log($"{senders[i]}: {messages[i]}");
         }
     }
 

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TargetingHandler : ITargetingHandler
 {
-    public SummonedMonsterController FindEnemy()
+    public ITargetable FindEnemy()
     {
         return SummonManager.Instance.FindEnemy();
     }

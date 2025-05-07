@@ -11,25 +11,18 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(PhotonView))]
 [RequireComponent(typeof(AniEventListener))]
 [RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(ObjectNetworkReceiver))]
+[RequireComponent(typeof(MonsterNetworkReceiver))]
 [RequireComponent(typeof(MonsterStat))]
 [RequireComponent(typeof(Animator))]
-public class SummonedMonsterController : MonoBehaviour, IPunInstantiateMagicCallback
+public class SummonedMonsterController : BaseController<SummonedMonsterController>
 {
     public SummonObjectData MonsterData { get; private set; }
     public AniEventListener AniEventListener { get; private set; }
-    public ObjectNetworkReceiver NetworkReceiver { get; private set; }
     public MonsterStat MonsterStat { get; private set; }
-    public ObjectState CurrentState { get; private set; }
-    public SummonedMonsterController Target { get; private set; }
-    public int ActorNum { get; private set; }
 
 
     private Animator animator;
     private NavMeshAgent agent;
-    private StateMachine<SummonedMonsterController> stateMachine;
-    private IState<SummonedMonsterController>[] states;
-    private HPBarUI healthBar;
 
     private ICombatHandler combatHandler;
     private IMovementHandler movementHandler;
@@ -40,20 +33,21 @@ public class SummonedMonsterController : MonoBehaviour, IPunInstantiateMagicCall
 
     private void Awake()
     {
-        AniEventListener = Helper.GetComponetHelpper<AniEventListener>(gameObject);
+        Transform = transform;
         agent = Helper.GetComponetHelpper<NavMeshAgent>(gameObject);
-        NetworkReceiver = Helper.GetComponetHelpper<ObjectNetworkReceiver>(gameObject);
+        AniEventListener = Helper.GetComponetHelpper<AniEventListener>(gameObject);
         MonsterStat = Helper.GetComponetHelpper<MonsterStat>(gameObject);
         animator = Helper.GetComponetHelpper<Animator>(gameObject);
-
-
         animationHandler = new AnimatorHandler(animator, MonsterStat);
         movementHandler = new NavMeshMovementHandler(agent, transform, MonsterStat, animationHandler);
-        combatHandler = new CombatHandler(this, MonsterStat, animationHandler);
+        base.Awake();
+        
+        combatHandler = new SummonObjectCombatHandler(this, MonsterStat, animationHandler);
         networkHandler = new PhotonNetworkHandler(NetworkReceiver.photonView, this);
         targetingHandler = new TargetingHandler();
+        
 
-        SetupState();
+
     }
 
     private void Start()
@@ -64,13 +58,9 @@ public class SummonedMonsterController : MonoBehaviour, IPunInstantiateMagicCall
         UpdateHealtBar();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
-        if (ActorNum != PhotonNetwork.LocalPlayer.ActorNumber)
-            return;
-
-
-        Updated();
+        base.Update();
     }
 
     private void OnDisable()
@@ -78,20 +68,9 @@ public class SummonedMonsterController : MonoBehaviour, IPunInstantiateMagicCall
         if (healthBar != null)
             healthBar.UnLink();
     }
+    
 
-    private void SetupState()
-    {
-        states = new IState<SummonedMonsterController>[Enum.GetValues(typeof(ObjectState)).Length];
-        for (int i = 0; i < states.Length; i++)
-        {
-            states[i] = GetState((ObjectState)i);
-        }
-
-        stateMachine = new StateMachine<SummonedMonsterController>();
-        stateMachine.Setup(this, states[(int)ObjectState.Idle]);
-    }
-
-    IState<SummonedMonsterController> GetState(ObjectState _state)
+    protected override IState<SummonedMonsterController> GetState(ObjectState _state)
     {
         return _state switch
         {
@@ -102,22 +81,8 @@ public class SummonedMonsterController : MonoBehaviour, IPunInstantiateMagicCall
             _ => null
         };
     }
-
-    public void Updated()
-    {
-        stateMachine.Excute();
-    }
-
-    // ReSharper disable Unity.PerformanceAnalysis
-    public void ChangeState(ObjectState _newState)
-    {
-        if (CurrentState == ObjectState.Dead)
-            return;
-
-        stateMachine.ChangeState(states[(int)_newState]);
-        CurrentState = _newState;
-    }
-
+    
+    
     public void Move(Vector3 _dis)
     {
         movementHandler.Move(_dis);
@@ -145,15 +110,16 @@ public class SummonedMonsterController : MonoBehaviour, IPunInstantiateMagicCall
 
 
         var newTarget = targetingHandler.FindEnemy();
-
-        if (newTarget == Target) // ????? ?????? ?????.
+        
+        if (newTarget == Target)
             return;
 
         Target = newTarget;
         int targetViewID = -1;
 
         if (Target != null)
-            targetViewID = Target.NetworkReceiver.photonView.ViewID;
+            targetViewID = Target.PhotonViewID;
+
 
 
         NetworkReceiver.photonView.RPC(nameof(RPC_SetTarget), RpcTarget.Others, targetViewID);
@@ -169,7 +135,7 @@ public class SummonedMonsterController : MonoBehaviour, IPunInstantiateMagicCall
         combatHandler.Attack(Target);
     }
 
-    public void TakeDamage(int damage)
+    public override void TakeDamage(int damage)
     {
         if (CurrentState == ObjectState.Dead) return;
         if (ActorNum != PhotonNetwork.LocalPlayer.ActorNumber)
@@ -178,7 +144,7 @@ public class SummonedMonsterController : MonoBehaviour, IPunInstantiateMagicCall
         NetworkReceiver.photonView.RPC(nameof(RPC_TakeDamage), RpcTarget.All, damage);
     }
 
-    public void Die()
+    public override void Die()
     {
         if (ActorNum != PhotonNetwork.LocalPlayer.ActorNumber)
         {
@@ -193,16 +159,8 @@ public class SummonedMonsterController : MonoBehaviour, IPunInstantiateMagicCall
         ObjectPoolManager.Instance.ReturnObject(gameObject, 3);
     }
 
-    void UpdateHealtBar()
-    {
-        healthBar.UpdateFill(MonsterStat.CurrentHP.FinalValue, MonsterStat.MaxHP.FinalValue);
-    }
 
-    /// <summary>
-    /// ???? ????? RPC?? ??? ??????????? ??????
-    /// ???? : ?? ??????????? Target?? ????????, ??? Target???? ????????.
-    /// </summary>
-    /// <param name="_viewID"></param>
+    
     [PunRPC]
     public void RPC_SetTarget(int _viewID)
     {
@@ -216,37 +174,11 @@ public class SummonedMonsterController : MonoBehaviour, IPunInstantiateMagicCall
             PhotonView targetView = PhotonView.Find(_viewID);
             if (targetView != null)
             {
-                Target = Helper.GetComponetHelpper<SummonedMonsterController>(targetView.gameObject);
+                Target = Helper.GetComponetHelpper<ITargetable>(targetView.gameObject);
             }
         }
     }
 
-    /// <summary>
-    /// RPC ?? ??? ????????? State?? ?????? ??? RPC?? ???? ??? ????????? ??? State??
-    /// ????????? ???¢¬? ??????
-    /// ??????? ??? ???? :
-    /// RPC?? ??? ?????? ???. ???????? ??????? ???????????????
-    /// </summary>
-    /// <param name="_state"></param>
-
-    //[PunRPC]
-    //public void RPC_ChangeState(int _state)
-    //{
-    //    ChangeState((ObjectState)_state, true);
-    //}
-    [PunRPC]
-    public void RPC_TakeDamage(int _damage)
-    {
-        if (CurrentState == ObjectState.Dead) return;
-
-
-        MonsterStat.CurrentHP.ModifyAllValue(_damage);
-        UpdateHealtBar();
-        if (MonsterStat.CurrentHP.FinalValue <= 0)
-        {
-            ChangeState(ObjectState.Dead);
-        }
-    }
 
     [PunRPC]
     public void RegisterToPool_RPC(int viewID)
@@ -279,6 +211,7 @@ public class SummonedMonsterController : MonoBehaviour, IPunInstantiateMagicCall
             transform.rotation = NetworkReceiver.MirrorRotation(transform.rotation);
             SummonManager.Instance.EnemyList.Add(this);
             ObjectPoolManager.Instance.GetObjectSync(gameObject);
+            // SummonManager.Instance.EnemyCanon = Canon
         }
 
         agent.avoidancePriority = UnityEngine.Random.Range(0, 50);
@@ -290,8 +223,29 @@ public class SummonedMonsterController : MonoBehaviour, IPunInstantiateMagicCall
     {
         ObjectPoolManager.Instance.ReturnObject(gameObject, 3);
     }
+    [PunRPC]
 
-    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    public override void RPC_TakeDamage(int _damage)
+    {
+        if(CurrentState == ObjectState.Dead) return;
+
+
+        MonsterStat.CurrentHP.ModifyAllValue(_damage);
+        UpdateHealtBar();
+        if (MonsterStat.CurrentHP.FinalValue <= 0)
+        {
+            ChangeState(ObjectState.Dead);
+        }
+    }
+
+    protected override void UpdateHealtBar()
+    {
+        healthBar.UpdateFill(MonsterStat.CurrentHP.FinalValue, MonsterStat.MaxHP.FinalValue);
+    }
+
+
+
+    public override void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] instData = NetworkReceiver.photonView.InstantiationData;
         MonsterData = TableManager.Instance.GetTable<MonsterTable>().GetDataByID((int)instData[0]);
